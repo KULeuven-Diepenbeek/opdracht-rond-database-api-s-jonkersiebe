@@ -11,7 +11,7 @@ CREATE TABLE tornooi(
 CREATE TABLE speler(
     tennisvlaanderenid INT NOT NULL PRIMARY KEY,
     naam VARCHAR(200) NOT NULL,
-    punten INT NOT NULL,
+    punten INT NOT NULL
 );
 
 CREATE TABLE wedstrijd(
@@ -60,13 +60,11 @@ INSERT INTO wedstrijd(tornooi, speler1, speler2, winnaar, score, finale) VALUES 
 INSERT INTO wedstrijd(tornooi, speler1, speler2, winnaar, score, finale) VALUES (2, 5, 7, 5, '6-0, 6-0', 1);
 
 
-INSERT INTO student_volgt_vak(speler, tornooi) VALUES (1, 1);
-INSERT INTO student_volgt_vak(speler, tornooi) VALUES (2, 1);
-INSERT INTO student_volgt_vak(speler, tornooi) VALUES (3, 1);
-INSERT INTO student_volgt_vak(speler, tornooi) VALUES (4, 1);
-INSERT INTO student_volgt_vak(speler, tornooi) VALUES (5, 2);
-INSERT INTO student_volgt_vak(speler, tornooi) VALUES (6, 2);
-INSERT INTO student_volgt_vak(speler, tornooi) VALUES (7, 2);
-INSERT INTO student_volgt_vak(speler, tornooi) VALUES (8, 2);
-
-
+INSERT INTO speler_speelt_tornooi(speler, tornooi) VALUES (1, 1);
+INSERT INTO speler_speelt_tornooi(speler, tornooi) VALUES (2, 1);
+INSERT INTO speler_speelt_tornooi(speler, tornooi) VALUES (3, 1);
+INSERT INTO speler_speelt_tornooi(speler, tornooi) VALUES (4, 1);
+INSERT INTO speler_speelt_tornooi(speler, tornooi) VALUES (5, 2);
+INSERT INTO speler_speelt_tornooi(speler, tornooi) VALUES (6, 2);
+INSERT INTO speler_speelt_tornooi(speler, tornooi) VALUES (7, 2);
+INSERT INTO speler_speelt_tornooi(speler, tornooi) VALUES (8, 2);
