@@ -21,3 +21,66 @@ In het project zijn alle klassen die je nodig hebt al aangemaakt op de correcte 
 Veel succes! Je mag me altijd contacteren via [arne.duyver@kuleuven.be](mailto::arne.duyver@kuleuven.be) voor vragen of in de les aanspreken.
 
 Er is ook een video met deze uitleg voorzien die je op [Toledo](https://toledo.kuleuven.be) bij de opdracht kan terugvinden.
+
+### VERBETERINGEN:
+
+Testen in `SepelerRepositoryTest.java`, de twee laatste testen:
+```java
+@Test
+  public void givenSpeler1enTornooi3_whenAddSpelerToTornooi_assertThatRowInSpeler_speelt_tornooi() {
+    // Arrange
+    int tennisvlaanderenId = 1;
+    int tornooiId = 3;
+    // Act
+    spelerRepository.addSpelerToTornooi(tornooiId, tennisvlaanderenId);
+    // Assert
+    try {
+      ConnectionManager cm = new ConnectionManager(CONNECTIONSTRING_TO_TEST_DB, USER_OF_TEST_DB, PWD_OF_TEST_DB);
+      Statement statement = (Statement) cm.getConnection().createStatement();
+      var result = statement
+          .executeQuery("SELECT COUNT(*) as cnt FROM speler_speelt_tornooi WHERE speler = 1 and tornooi = 3;");
+      while (result.next()) {
+        assertThat(result.getInt("cnt")).isEqualTo(1);
+      }
+      statement.close();
+      cm.getConnection().commit();
+      cm.getConnection().close();
+    } catch (SQLException e) {
+      e.printStackTrace();
+      throw new RuntimeException(e);
+    }
+
+  }
+
+  @Test
+  public void givenSpeler5enTornooi2_whenRemoveSpelerToTornooi_assertThatNoRowInSpeler_speelt_tornooi() {
+    // Arrange
+    int tennisvlaanderenId = 5;
+    int tornooiId = 2;
+    // Act
+    spelerRepository.removeSpelerFromTornooi(tornooiId, tennisvlaanderenId);
+    // Assert
+    try {
+      ConnectionManager cm = new ConnectionManager(CONNECTIONSTRING_TO_TEST_DB, USER_OF_TEST_DB, PWD_OF_TEST_DB);
+      Statement statement = (Statement) cm.getConnection().createStatement();
+      var result = statement
+          .executeQuery("SELECT COUNT(*) as cnt FROM speler_speelt_tornooi WHERE speler = 1 and tornooi = 3;");
+      while (result.next()) {
+        assertThat(result.getInt("cnt")).isEqualTo(0);
+      }
+      statement.close();
+      cm.getConnection().commit();
+      cm.getConnection().close();
+    } catch (SQLException e) {
+      e.printStackTrace();
+      throw new RuntimeException(e);
+    }
+  }
+```
+
+In `SpelerRepository.java`, `SpelerRepositoryJDBCimpl.java` en `SpelerRepositoryJDBIimpl.java` moeten de methoden 'addSpelerToTornooi' en 'removeSpelerFromTornooi' nog een extra parameter hebben:
+```java
+public void addSpelerToTornooi(int tornooiId, int tennisvlaanderenId);
+
+public void removeSpelerFromTornooi(int tornooiId, int tennisvlaanderenId);
+```
