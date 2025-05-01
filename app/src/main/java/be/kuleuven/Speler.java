@@ -1,52 +1,14 @@
 package be.kuleuven;
 
 import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
-import javax.persistence.CascadeType;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.PostLoad;
-import javax.persistence.Transient;
-
-// TODO add missing decorators for JPA
 public class Speler {
-
   private int tennisvlaanderenId;
-
   private String naam;
-
   private int punten;
-
   // For relations
-  // One-to-Many unidirectional for matches where this is speler1
-  @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
-  @JoinColumn(name = "speler1", referencedColumnName = "tennisvlaanderenid")
-  private List<Wedstrijd> wedstrijdenAlsSpeler1 = new ArrayList<>();
-
-  // One-to-Many unidirectional for matches where this is speler2
-  @OneToMany(cascade = CascadeType.REMOVE, orphanRemoval = true)
-  @JoinColumn(name = "speler2", referencedColumnName = "tennisvlaanderenid")
-  private List<Wedstrijd> wedstrijdenAlsSpeler2 = new ArrayList<>();
-
-  // Transient combined list of all matches
-  @Transient
-  private List<Wedstrijd> wedstrijden = new ArrayList<>();
-
-  @PostLoad
-  private void populateWedstrijden() {
-    wedstrijden.clear();
-    wedstrijden.addAll(wedstrijdenAlsSpeler1);
-    wedstrijden.addAll(wedstrijdenAlsSpeler2);
-  }
-
-  // Many-to-Many with Tornooi, renamed field
-  @ManyToMany
-  @JoinTable(name = "speler_speelt_tornooi", joinColumns = @JoinColumn(name = "speler", referencedColumnName = "tennisvlaanderenid"), inverseJoinColumns = @JoinColumn(name = "tornooi", referencedColumnName = "id"))
-  private List<Tornooi> tornooien;
+  private ArrayList<Wedstrijd> wedstrijden;
+  private ArrayList<Tornooi> tornooien;
 
   // Constructors
   public Speler() {
@@ -61,11 +23,11 @@ public class Speler {
     this.tornooien = new ArrayList<>();
   }
 
-  public int getTennisvlaanderenId() {
+  public int getTennisvlaanderenid() {
     return tennisvlaanderenId;
   }
 
-  public void setTennisvlaanderenId(int tennisvlaanderenId) {
+  public void setTennisvlaanderenid(int tennisvlaanderenId) {
     this.tennisvlaanderenId = tennisvlaanderenId;
   }
 
@@ -85,18 +47,14 @@ public class Speler {
     this.punten = punten;
   }
 
-  // @Override
-  // public int hashCode() {
-  //   final int prime = 31;
-  //   int result = 1;
-  //   result = prime * result + tennisvlaanderenId;
-  //   result = prime * result + ((naam == null) ? 0 : naam.hashCode());
-  //   result = prime * result + punten;
-  //   return result;
-  // }
   @Override
   public int hashCode() {
-    return Objects.hash(tennisvlaanderenId, naam, punten);
+    final int prime = 31;
+    int result = 1;
+    result = prime * result + tennisvlaanderenId;
+    result = prime * result + ((naam == null) ? 0 : naam.hashCode());
+    result = prime * result + punten;
+    return result;
   }
 
   @Override
@@ -126,7 +84,7 @@ public class Speler {
   }
 
   // For relations
-  public List<Wedstrijd> getWedstrijden() {
+  public ArrayList<Wedstrijd> getWedstrijden() {
     return wedstrijden;
   }
 
@@ -140,7 +98,7 @@ public class Speler {
     wedstrijden.removeIf(wedstrijd -> wedstrijd.getId() == wedstrijdId);
   }
 
-  public List<Tornooi> getTornooien() {
+  public ArrayList<Tornooi> getTornooien() {
     return tornooien;
   }
 

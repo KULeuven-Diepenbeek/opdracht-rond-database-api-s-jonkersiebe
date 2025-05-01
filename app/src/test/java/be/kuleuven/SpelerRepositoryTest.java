@@ -10,7 +10,7 @@ import static org.assertj.core.api.Assertions.catchThrowable;
 import org.junit.Test;
 
 public abstract class SpelerRepositoryTest {
-  protected final String CONNECTIONSTRING_TO_TEST_DB = "jdbc:sqlite:testdatabase.db";
+  protected final String CONNECTIONSTRING_TO_TEST_DB = "jdbc:sqlite:TennisDatabase.db";
   protected final String USER_OF_TEST_DB = "";
   protected final String PWD_OF_TEST_DB = "";
 
