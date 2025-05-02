@@ -15,7 +15,7 @@ public class SpelerRepositoryJDBIimpl implements SpelerRepository {
   @Override
   public void addSpelerToDb(Speler speler) {
     jdbi.withHandle(handle -> {
-      return handle.createUpdate("INSERT INTO speler (tennisvlaanderenid, naam, punten) VALUES (:tennisvlaanderenid, :naam, :punten)")
+      return handle.createUpdate("INSERT INTO speler (tennisvlaanderenid, naam, punten) VALUES (:tennisvlaanderenId, :naam, :punten)")
           .bindBean(speler)
           .execute();
     });
@@ -44,33 +44,33 @@ public class SpelerRepositoryJDBIimpl implements SpelerRepository {
   @Override
   public void updateSpelerInDb(Speler speler) {
     int changedRows = jdbi.withHandle(handle -> {
-      return handle.createUpdate("UPDATE speler SET naam = :naam, punten = :punten WHERE tennisvlaanderenid = :tennisvlaanderenid")
+      return handle.createUpdate("UPDATE speler SET naam = :naam, punten = :punten WHERE tennisvlaanderenid = :tennisvlaanderenId")
           .bindBean(speler)
           .execute();
     });
     if (changedRows == 0) {
-      throw new InvalidSpelerException(speler.getTennisvlaanderenid() + "");
+      throw new InvalidSpelerException(speler.getTennisvlaanderenId() + "");
     }
   }
 
   @Override
-  public void deleteSpelerInDb(int tennisvlaanderenid) {
+  public void deleteSpelerInDb(int tennisvlaanderenId) {
     int deletedRows = jdbi.withHandle(handle -> {
       return handle.createUpdate("DELETE FROM speler WHERE tennisvlaanderenid = :id")
-          .bind("id", tennisvlaanderenid)
+          .bind("id", tennisvlaanderenId)
           .execute();
     });
     if (deletedRows == 0) {
-      throw new InvalidSpelerException(tennisvlaanderenid + "");
+      throw new InvalidSpelerException(tennisvlaanderenId + "");
     }
   }
 
   @Override
-  public String getHoogsteRankingVanSpeler(int tennisvlaanderenid) {
+  public String getHoogsteRankingVanSpeler(int tennisvlaanderenId) {
     try {
-        getSpelerByTennisvlaanderenId(tennisvlaanderenid);
+        getSpelerByTennisvlaanderenId(tennisvlaanderenId);
     } catch (Exception e) {
-      throw new InvalidSpelerException(tennisvlaanderenid + "");
+      throw new InvalidSpelerException(tennisvlaanderenId + "");
     }
 
     return jdbi.withHandle(handle -> {
@@ -81,14 +81,14 @@ public class SpelerRepositoryJDBIimpl implements SpelerRepository {
            "WHERE (w.speler1 = :id OR w.speler2 = :id) " +
            "ORDER BY w.finale ASC " +
            "LIMIT 1")
-          .bind("id", tennisvlaanderenid)
+          .bind("id", tennisvlaanderenId)
           .map((rs, ctx) -> {
             String clubnaam = rs.getString("clubnaam");
             int finale = rs.getInt("finale");
             Integer winnaar = rs.getObject("winnaar") != null ? rs.getInt("winnaar") : null;
             
             String finaleString;
-            if (finale == 1 && winnaar != null && winnaar == tennisvlaanderenid) {
+            if (finale == 1 && winnaar != null && winnaar == tennisvlaanderenId) {
                finaleString = "winst";
              } else if (finale == 1) {
                finaleString = "finale";

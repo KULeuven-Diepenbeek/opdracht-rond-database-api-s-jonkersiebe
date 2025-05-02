@@ -115,7 +115,7 @@ public class Tornooi {
   }
 
   public void deleteSpeler(int spelerId) {
-    ingeschrevenSpelers.removeIf(speler -> speler.getTennisvlaanderenid() == spelerId);
+    ingeschrevenSpelers.removeIf(speler -> speler.getTennisvlaanderenId() == spelerId);
   }
 
   public void deleteWedstrijd(int wedstrijdId) {

@@ -19,7 +19,7 @@ public class SpelerRepositoryJDBCimpl implements SpelerRepository {
   public void addSpelerToDb(Speler speler) {
     try {
         PreparedStatement prepared = (PreparedStatement) connection.prepareStatement("INSERT INTO speler (tennisvlaanderenid, naam, punten) VALUES (?, ?, ?);");
-        prepared.setInt(1, speler.getTennisvlaanderenid());
+        prepared.setInt(1, speler.getTennisvlaanderenId());
         prepared.setString(2, speler.getNaam());
         prepared.setInt(3, speler.getPunten());
         prepared.executeUpdate();
@@ -85,12 +85,12 @@ public class SpelerRepositoryJDBCimpl implements SpelerRepository {
 
   @Override
   public void updateSpelerInDb(Speler speler) {
-    getSpelerByTennisvlaanderenId(speler.getTennisvlaanderenid());
+    getSpelerByTennisvlaanderenId(speler.getTennisvlaanderenId());
     try {
         PreparedStatement prepared = (PreparedStatement) connection.prepareStatement("UPDATE speler SET naam = ?, punten = ? WHERE tennisvlaanderenid = ?");
         prepared.setString(1, speler.getNaam());
         prepared.setInt(2, speler.getPunten());
-        prepared.setInt(3, speler.getTennisvlaanderenid());
+        prepared.setInt(3, speler.getTennisvlaanderenId());
         prepared.executeUpdate();
         prepared.close();
         connection.commit();
